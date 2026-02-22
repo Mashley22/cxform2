@@ -1,0 +1,28 @@
+N=50
+Comparing transformation from GSE to GEI:
+Average absolute differences: 	0.000017	0.000118	0.000044
+Average percent differences:  	0.000058	0.000969	0.000173
+
+Comparing transformation from GSE to J2000:
+Average absolute differences: 	0.016407	0.000121	0.018641
+Average percent differences:  	0.056601	0.000991	0.072892
+
+Comparing transformation from GSE to GEO:
+Average absolute differences: 	0.000301	0.000336	0.000044
+Average percent differences:  	0.006257	0.013579	0.000173
+
+Comparing transformation from GSE to MAG:
+Average absolute differences: 	0.018702	0.018535	0.007335
+Average percent differences:  	0.376398	0.410729	0.034653
+
+Comparing transformation from GSE to GSE:
+Average absolute differences: 	0.000000	0.000000	0.000000
+Average percent differences:  	0.000000	0.000000	0.000000
+
+Comparing transformation from GSE to GSM:
+Average absolute differences: 	0.000000	0.004959	0.001010
+Average percent differences:  	0.000000	0.296073	0.003312
+
+Comparing transformation from GSE to SM:
+Average absolute differences: 	0.003883	0.004959	0.007335
+Average percent differences:  	0.011531	0.296073	0.034653

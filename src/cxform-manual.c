@@ -780,7 +780,7 @@ mat_S2(const double et, Mat mat)
 ** function, passing us a pointer to a function that defines the matrix.
 */
 int
-simple_rotation(const double et, Vec v_in, Vec v_out, Direction d, void (*m)())
+simple_rotation(const double et, Vec v_in, Vec v_out, Direction d, void (*m)(const double, Mat))
 {
   Mat mat;
 

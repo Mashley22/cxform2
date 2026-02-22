@@ -14,6 +14,11 @@
 
 int main(int argc, char** argv)
 {
+  if (argc != 10) {
+    printf("Please provide the date as program arguements, see docs");
+    abort();
+  }
+
 	int retVal, es, year, month, day, hour, minute, second;
 	double jd;
 	Vec v_in, v_out0, v_out1, v_out2, v_out3;

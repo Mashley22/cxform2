@@ -969,8 +969,8 @@ double gregorian_calendar_to_jd(int y, int m, int d, int h, int mi, int s)
 {
 	y+=8000;
 	if(m<3) { y--; m+=12; }
-	return (y*365) +(y/4.0) -(y/100.0) +(y/400.0) -1200820
-	          +(m*153+3)/5.0-92
+	return (y*365) +(int)(y/4) -(int)(y/100) +(int)(y/400) -1200820
+	          +(int)((m*153+3)/5)-92
 	          +d-1
 	          +h/24.0
 	          +mi/1440.0

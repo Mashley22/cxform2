@@ -114,7 +114,7 @@ void mat_times_mat( Mat m1,  Mat m2, Mat m_out)
 /******************\
 |* mat_times_vec  *|  multiplies a 3x3 matrix by a 3-D vector
 \******************/
-void mat_times_vec(Mat m1, Vec v1, Vec v_out)
+void mat_times_vec(Mat m1,const Vec v1, Vec v_out)
 {
   int i;
   Vec v_tmp;
@@ -780,7 +780,7 @@ mat_S2(const double et, Mat mat)
 ** function, passing us a pointer to a function that defines the matrix.
 */
 int
-simple_rotation(const double et, Vec v_in, Vec v_out, Direction d, void (*m)(const double, Mat))
+simple_rotation(const double et, const Vec v_in, Vec v_out, Direction d, void (*m)(const double, Mat))
 {
   Mat mat;
 
@@ -806,37 +806,37 @@ simple_rotation(const double et, Vec v_in, Vec v_out, Direction d, void (*m)(con
 
 /*  Bo-ring.  Just call simple_rotation() with the appropriate matrix. */
 int
-j2000_twixt_gei(const double et, Vec v_in, Vec v_out, Direction direction)
+j2000_twixt_gei(const double et, const Vec v_in, Vec v_out, Direction direction)
 {
   return simple_rotation(et, v_in, v_out, direction, &mat_P);
 }
 
 int
-gei_twixt_geo(const double et, Vec v_in, Vec v_out, Direction direction)
+gei_twixt_geo(const double et, const Vec v_in, Vec v_out, Direction direction)
 {
   return simple_rotation(et, v_in, v_out, direction, &mat_T1);
 }
 
 int
-geo_twixt_mag(const double et, Vec v_in, Vec v_out, Direction direction)
+geo_twixt_mag(const double et, const Vec v_in, Vec v_out, Direction direction)
 {
   return simple_rotation(et, v_in, v_out, direction, &mat_T5);
 }
 
 int
-gei_twixt_gse(const double et, Vec v_in, Vec v_out, Direction direction)
+gei_twixt_gse(const double et, const Vec v_in, Vec v_out, Direction direction)
 {
   return simple_rotation(et, v_in, v_out, direction, &mat_T2);
 }
 
 int
-gse_twixt_gsm(const double et, Vec v_in, Vec v_out, Direction direction)
+gse_twixt_gsm(const double et, const Vec v_in, Vec v_out, Direction direction)
 {
   return simple_rotation(et, v_in, v_out, direction, &mat_T3);
 }
 
 int
-gsm_twixt_sm(const double et, Vec v_in, Vec v_out, Direction direction)
+gsm_twixt_sm(const double et, const Vec v_in, Vec v_out, Direction direction)
 {
   return simple_rotation(et, v_in, v_out, direction, &mat_T4);
 }
@@ -848,7 +848,7 @@ gsm_twixt_sm(const double et, Vec v_in, Vec v_out, Direction direction)
 ** treated as such
 */
 int
-gse_twixt_rtn(const double et, Vec v_in, Vec v_out, Direction direction)
+gse_twixt_rtn(const double et, const Vec v_in, Vec v_out, Direction direction)
 {  
   	/*  Convert time  */
 	double dYear = (et/31557600.0) + 2000.0013689254;
@@ -874,7 +874,7 @@ gse_twixt_rtn(const double et, Vec v_in, Vec v_out, Direction direction)
 
 
 int
-gse_twixt_gseq(const double et, Vec v_in, Vec v_out, Direction direction)
+gse_twixt_gseq(const double et, const Vec v_in, Vec v_out, Direction direction)
 {
 	return simple_rotation(et, v_in, v_out, direction, &mat_T6);
 }
@@ -916,7 +916,7 @@ gse_twixt_gseq(const double et, Vec v_in, Vec v_out, Direction direction)
 ** Implemented by Ed Santiago, Updated by Kristi Keller
 */
 int
-gse_twixt_hee(const double et, Vec v_in, Vec v_out, Direction direction)
+gse_twixt_hee(const double et, const Vec v_in, Vec v_out, Direction direction)
 {
   Mat mat;
   double r0,e, w,v, Rsun;
@@ -943,13 +943,13 @@ gse_twixt_hee(const double et, Vec v_in, Vec v_out, Direction direction)
 
 
 int
-hae_twixt_hee(const double et, Vec v_in, Vec v_out, Direction direction)
+hae_twixt_hee(const double et, const Vec v_in, Vec v_out, Direction direction)
 {
   return simple_rotation(et, v_in, v_out, direction, &mat_S1);
 }
 
 int
-hae_twixt_heeq(const double et, Vec v_in, Vec v_out, Direction direction)
+hae_twixt_heeq(const double et, const Vec v_in, Vec v_out, Direction direction)
 {
   return simple_rotation(et, v_in, v_out, direction, &mat_S2);
 }

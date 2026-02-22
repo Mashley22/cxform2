@@ -30,7 +30,6 @@ static char const Ident[] = "@(#) $XX: cxform-auto.c   c:1.30 pl:1.40 $";
 ** by char, and returns the numeric representation of the desired
 ** coordinate system.  Note that upper/lower case combos are fine.
 */
-enum systems { UNKNOWN, J2000, GEI, GEO, MAG, GSE, GSM, SM, RTN, GSEQ, HEE, HAE, HEEQ };
 enum systems system_number( const char *system )
 {
   if (system == NULL)
@@ -230,153 +229,153 @@ enum systems system_number( const char *system )
 **
 ** The first cluster, below, lists the functions defined in cxform-manual.c
 */
-extern int j2000_twixt_gei   (double t, Vec in, Vec out, Direction d);
-extern int   gei_twixt_geo   (double t, Vec in, Vec out, Direction d);
-extern int   gei_twixt_gse   (double t, Vec in, Vec out, Direction d);
-extern int   geo_twixt_mag   (double t, Vec in, Vec out, Direction d);
-extern int   gse_twixt_gsm   (double t, Vec in, Vec out, Direction d);
-extern int   gse_twixt_rtn   (double t, Vec in, Vec out, Direction d);
-extern int   gse_twixt_gseq  (double t, Vec in, Vec out, Direction d);
-extern int   gse_twixt_hee   (double t, Vec in, Vec out, Direction d);
-extern int   gsm_twixt_sm    (double t, Vec in, Vec out, Direction d);
-extern int   hae_twixt_hee   (double t, Vec in, Vec out, Direction d);
-extern int   hae_twixt_heeq  (double t, Vec in, Vec out, Direction d);
+extern int j2000_twixt_gei   (double t, const Vec in, Vec out, Direction d);
+extern int   gei_twixt_geo   (double t, const Vec in, Vec out, Direction d);
+extern int   gei_twixt_gse   (double t, const Vec in, Vec out, Direction d);
+extern int   geo_twixt_mag   (double t, const Vec in, Vec out, Direction d);
+extern int   gse_twixt_gsm   (double t, const Vec in, Vec out, Direction d);
+extern int   gse_twixt_rtn   (double t, const Vec in, Vec out, Direction d);
+extern int   gse_twixt_gseq  (double t, const Vec in, Vec out, Direction d);
+extern int   gse_twixt_hee   (double t, const Vec in, Vec out, Direction d);
+extern int   gsm_twixt_sm    (double t, const Vec in, Vec out, Direction d);
+extern int   hae_twixt_hee   (double t, const Vec in, Vec out, Direction d);
+extern int   hae_twixt_heeq  (double t, const Vec in, Vec out, Direction d);
 
 /*
 ** This second (long) cluster defines the wrappers we generate automatically.
 */
-static int j2000_to_gei   (double t, Vec in, Vec out);
-static int j2000_to_geo   (double t, Vec in, Vec out);
-static int j2000_to_mag   (double t, Vec in, Vec out);
-static int j2000_to_gse   (double t, Vec in, Vec out);
-static int j2000_to_gsm   (double t, Vec in, Vec out);
-static int j2000_to_sm    (double t, Vec in, Vec out);
-static int j2000_to_rtn   (double t, Vec in, Vec out);
-static int j2000_to_gseq  (double t, Vec in, Vec out);
-static int j2000_to_hee   (double t, Vec in, Vec out);
-static int j2000_to_hae   (double t, Vec in, Vec out);
-static int j2000_to_heeq  (double t, Vec in, Vec out);
-static int   gei_to_j2000 (double t, Vec in, Vec out);
-static int   gei_to_geo   (double t, Vec in, Vec out);
-static int   gei_to_mag   (double t, Vec in, Vec out);
-static int   gei_to_gse   (double t, Vec in, Vec out);
-static int   gei_to_gsm   (double t, Vec in, Vec out);
-static int   gei_to_sm    (double t, Vec in, Vec out);
-static int   gei_to_rtn   (double t, Vec in, Vec out);
-static int   gei_to_gseq  (double t, Vec in, Vec out);
-static int   gei_to_hee   (double t, Vec in, Vec out);
-static int   gei_to_hae   (double t, Vec in, Vec out);
-static int   gei_to_heeq  (double t, Vec in, Vec out);
-static int   geo_to_j2000 (double t, Vec in, Vec out);
-static int   geo_to_gei   (double t, Vec in, Vec out);
-static int   geo_to_mag   (double t, Vec in, Vec out);
-static int   geo_to_gse   (double t, Vec in, Vec out);
-static int   geo_to_gsm   (double t, Vec in, Vec out);
-static int   geo_to_sm    (double t, Vec in, Vec out);
-static int   geo_to_rtn   (double t, Vec in, Vec out);
-static int   geo_to_gseq  (double t, Vec in, Vec out);
-static int   geo_to_hee   (double t, Vec in, Vec out);
-static int   geo_to_hae   (double t, Vec in, Vec out);
-static int   geo_to_heeq  (double t, Vec in, Vec out);
-static int   mag_to_j2000 (double t, Vec in, Vec out);
-static int   mag_to_gei   (double t, Vec in, Vec out);
-static int   mag_to_geo   (double t, Vec in, Vec out);
-static int   mag_to_gse   (double t, Vec in, Vec out);
-static int   mag_to_gsm   (double t, Vec in, Vec out);
-static int   mag_to_sm    (double t, Vec in, Vec out);
-static int   mag_to_rtn   (double t, Vec in, Vec out);
-static int   mag_to_gseq  (double t, Vec in, Vec out);
-static int   mag_to_hee   (double t, Vec in, Vec out);
-static int   mag_to_hae   (double t, Vec in, Vec out);
-static int   mag_to_heeq  (double t, Vec in, Vec out);
-static int   gse_to_j2000 (double t, Vec in, Vec out);
-static int   gse_to_gei   (double t, Vec in, Vec out);
-static int   gse_to_geo   (double t, Vec in, Vec out);
-static int   gse_to_mag   (double t, Vec in, Vec out);
-static int   gse_to_gsm   (double t, Vec in, Vec out);
-static int   gse_to_sm    (double t, Vec in, Vec out);
-static int   gse_to_rtn   (double t, Vec in, Vec out);
-static int   gse_to_gseq  (double t, Vec in, Vec out);
-static int   gse_to_hee   (double t, Vec in, Vec out);
-static int   gse_to_hae   (double t, Vec in, Vec out);
-static int   gse_to_heeq  (double t, Vec in, Vec out);
-static int   gsm_to_j2000 (double t, Vec in, Vec out);
-static int   gsm_to_gei   (double t, Vec in, Vec out);
-static int   gsm_to_geo   (double t, Vec in, Vec out);
-static int   gsm_to_mag   (double t, Vec in, Vec out);
-static int   gsm_to_gse   (double t, Vec in, Vec out);
-static int   gsm_to_sm    (double t, Vec in, Vec out);
-static int   gsm_to_rtn   (double t, Vec in, Vec out);
-static int   gsm_to_gseq  (double t, Vec in, Vec out);
-static int   gsm_to_hee   (double t, Vec in, Vec out);
-static int   gsm_to_hae   (double t, Vec in, Vec out);
-static int   gsm_to_heeq  (double t, Vec in, Vec out);
-static int    sm_to_j2000 (double t, Vec in, Vec out);
-static int    sm_to_gei   (double t, Vec in, Vec out);
-static int    sm_to_geo   (double t, Vec in, Vec out);
-static int    sm_to_mag   (double t, Vec in, Vec out);
-static int    sm_to_gse   (double t, Vec in, Vec out);
-static int    sm_to_gsm   (double t, Vec in, Vec out);
-static int    sm_to_rtn   (double t, Vec in, Vec out);
-static int    sm_to_gseq  (double t, Vec in, Vec out);
-static int    sm_to_hee   (double t, Vec in, Vec out);
-static int    sm_to_hae   (double t, Vec in, Vec out);
-static int    sm_to_heeq  (double t, Vec in, Vec out);
-static int   rtn_to_j2000 (double t, Vec in, Vec out);
-static int   rtn_to_gei   (double t, Vec in, Vec out);
-static int   rtn_to_geo   (double t, Vec in, Vec out);
-static int   rtn_to_mag   (double t, Vec in, Vec out);
-static int   rtn_to_gse   (double t, Vec in, Vec out);
-static int   rtn_to_gsm   (double t, Vec in, Vec out);
-static int   rtn_to_sm    (double t, Vec in, Vec out);
-static int   rtn_to_gseq  (double t, Vec in, Vec out);
-static int   rtn_to_hee   (double t, Vec in, Vec out);
-static int   rtn_to_hae   (double t, Vec in, Vec out);
-static int   rtn_to_heeq  (double t, Vec in, Vec out);
-static int  gseq_to_j2000 (double t, Vec in, Vec out);
-static int  gseq_to_gei   (double t, Vec in, Vec out);
-static int  gseq_to_geo   (double t, Vec in, Vec out);
-static int  gseq_to_mag   (double t, Vec in, Vec out);
-static int  gseq_to_gse   (double t, Vec in, Vec out);
-static int  gseq_to_gsm   (double t, Vec in, Vec out);
-static int  gseq_to_sm    (double t, Vec in, Vec out);
-static int  gseq_to_rtn   (double t, Vec in, Vec out);
-static int  gseq_to_hee   (double t, Vec in, Vec out);
-static int  gseq_to_hae   (double t, Vec in, Vec out);
-static int  gseq_to_heeq  (double t, Vec in, Vec out);
-static int   hee_to_j2000 (double t, Vec in, Vec out);
-static int   hee_to_gei   (double t, Vec in, Vec out);
-static int   hee_to_geo   (double t, Vec in, Vec out);
-static int   hee_to_mag   (double t, Vec in, Vec out);
-static int   hee_to_gse   (double t, Vec in, Vec out);
-static int   hee_to_gsm   (double t, Vec in, Vec out);
-static int   hee_to_sm    (double t, Vec in, Vec out);
-static int   hee_to_rtn   (double t, Vec in, Vec out);
-static int   hee_to_gseq  (double t, Vec in, Vec out);
-static int   hee_to_hae   (double t, Vec in, Vec out);
-static int   hee_to_heeq  (double t, Vec in, Vec out);
-static int   hae_to_j2000 (double t, Vec in, Vec out);
-static int   hae_to_gei   (double t, Vec in, Vec out);
-static int   hae_to_geo   (double t, Vec in, Vec out);
-static int   hae_to_mag   (double t, Vec in, Vec out);
-static int   hae_to_gse   (double t, Vec in, Vec out);
-static int   hae_to_gsm   (double t, Vec in, Vec out);
-static int   hae_to_sm    (double t, Vec in, Vec out);
-static int   hae_to_rtn   (double t, Vec in, Vec out);
-static int   hae_to_gseq  (double t, Vec in, Vec out);
-static int   hae_to_hee   (double t, Vec in, Vec out);
-static int   hae_to_heeq  (double t, Vec in, Vec out);
-static int  heeq_to_j2000 (double t, Vec in, Vec out);
-static int  heeq_to_gei   (double t, Vec in, Vec out);
-static int  heeq_to_geo   (double t, Vec in, Vec out);
-static int  heeq_to_mag   (double t, Vec in, Vec out);
-static int  heeq_to_gse   (double t, Vec in, Vec out);
-static int  heeq_to_gsm   (double t, Vec in, Vec out);
-static int  heeq_to_sm    (double t, Vec in, Vec out);
-static int  heeq_to_rtn   (double t, Vec in, Vec out);
-static int  heeq_to_gseq  (double t, Vec in, Vec out);
-static int  heeq_to_hee   (double t, Vec in, Vec out);
-static int  heeq_to_hae   (double t, Vec in, Vec out);
+static int j2000_to_gei   (double t, const Vec in, Vec out);
+static int j2000_to_geo   (double t, const Vec in, Vec out);
+static int j2000_to_mag   (double t, const Vec in, Vec out);
+static int j2000_to_gse   (double t, const Vec in, Vec out);
+static int j2000_to_gsm   (double t, const Vec in, Vec out);
+static int j2000_to_sm    (double t, const Vec in, Vec out);
+static int j2000_to_rtn   (double t, const Vec in, Vec out);
+static int j2000_to_gseq  (double t, const Vec in, Vec out);
+static int j2000_to_hee   (double t, const Vec in, Vec out);
+static int j2000_to_hae   (double t, const Vec in, Vec out);
+static int j2000_to_heeq  (double t, const Vec in, Vec out);
+static int   gei_to_j2000 (double t, const Vec in, Vec out);
+static int   gei_to_geo   (double t, const Vec in, Vec out);
+static int   gei_to_mag   (double t, const Vec in, Vec out);
+static int   gei_to_gse   (double t, const Vec in, Vec out);
+static int   gei_to_gsm   (double t, const Vec in, Vec out);
+static int   gei_to_sm    (double t, const Vec in, Vec out);
+static int   gei_to_rtn   (double t, const Vec in, Vec out);
+static int   gei_to_gseq  (double t, const Vec in, Vec out);
+static int   gei_to_hee   (double t, const Vec in, Vec out);
+static int   gei_to_hae   (double t, const Vec in, Vec out);
+static int   gei_to_heeq  (double t, const Vec in, Vec out);
+static int   geo_to_j2000 (double t, const Vec in, Vec out);
+static int   geo_to_gei   (double t, const Vec in, Vec out);
+static int   geo_to_mag   (double t, const Vec in, Vec out);
+static int   geo_to_gse   (double t, const Vec in, Vec out);
+static int   geo_to_gsm   (double t, const Vec in, Vec out);
+static int   geo_to_sm    (double t, const Vec in, Vec out);
+static int   geo_to_rtn   (double t, const Vec in, Vec out);
+static int   geo_to_gseq  (double t, const Vec in, Vec out);
+static int   geo_to_hee   (double t, const Vec in, Vec out);
+static int   geo_to_hae   (double t, const Vec in, Vec out);
+static int   geo_to_heeq  (double t, const Vec in, Vec out);
+static int   mag_to_j2000 (double t, const Vec in, Vec out);
+static int   mag_to_gei   (double t, const Vec in, Vec out);
+static int   mag_to_geo   (double t, const Vec in, Vec out);
+static int   mag_to_gse   (double t, const Vec in, Vec out);
+static int   mag_to_gsm   (double t, const Vec in, Vec out);
+static int   mag_to_sm    (double t, const Vec in, Vec out);
+static int   mag_to_rtn   (double t, const Vec in, Vec out);
+static int   mag_to_gseq  (double t, const Vec in, Vec out);
+static int   mag_to_hee   (double t, const Vec in, Vec out);
+static int   mag_to_hae   (double t, const Vec in, Vec out);
+static int   mag_to_heeq  (double t, const Vec in, Vec out);
+static int   gse_to_j2000 (double t, const Vec in, Vec out);
+static int   gse_to_gei   (double t, const Vec in, Vec out);
+static int   gse_to_geo   (double t, const Vec in, Vec out);
+static int   gse_to_mag   (double t, const Vec in, Vec out);
+static int   gse_to_gsm   (double t, const Vec in, Vec out);
+static int   gse_to_sm    (double t, const Vec in, Vec out);
+static int   gse_to_rtn   (double t, const Vec in, Vec out);
+static int   gse_to_gseq  (double t, const Vec in, Vec out);
+static int   gse_to_hee   (double t, const Vec in, Vec out);
+static int   gse_to_hae   (double t, const Vec in, Vec out);
+static int   gse_to_heeq  (double t, const Vec in, Vec out);
+static int   gsm_to_j2000 (double t, const Vec in, Vec out);
+static int   gsm_to_gei   (double t, const Vec in, Vec out);
+static int   gsm_to_geo   (double t, const Vec in, Vec out);
+static int   gsm_to_mag   (double t, const Vec in, Vec out);
+static int   gsm_to_gse   (double t, const Vec in, Vec out);
+static int   gsm_to_sm    (double t, const Vec in, Vec out);
+static int   gsm_to_rtn   (double t, const Vec in, Vec out);
+static int   gsm_to_gseq  (double t, const Vec in, Vec out);
+static int   gsm_to_hee   (double t, const Vec in, Vec out);
+static int   gsm_to_hae   (double t, const Vec in, Vec out);
+static int   gsm_to_heeq  (double t, const Vec in, Vec out);
+static int    sm_to_j2000 (double t, const Vec in, Vec out);
+static int    sm_to_gei   (double t, const Vec in, Vec out);
+static int    sm_to_geo   (double t, const Vec in, Vec out);
+static int    sm_to_mag   (double t, const Vec in, Vec out);
+static int    sm_to_gse   (double t, const Vec in, Vec out);
+static int    sm_to_gsm   (double t, const Vec in, Vec out);
+static int    sm_to_rtn   (double t, const Vec in, Vec out);
+static int    sm_to_gseq  (double t, const Vec in, Vec out);
+static int    sm_to_hee   (double t, const Vec in, Vec out);
+static int    sm_to_hae   (double t, const Vec in, Vec out);
+static int    sm_to_heeq  (double t, const Vec in, Vec out);
+static int   rtn_to_j2000 (double t, const Vec in, Vec out);
+static int   rtn_to_gei   (double t, const Vec in, Vec out);
+static int   rtn_to_geo   (double t, const Vec in, Vec out);
+static int   rtn_to_mag   (double t, const Vec in, Vec out);
+static int   rtn_to_gse   (double t, const Vec in, Vec out);
+static int   rtn_to_gsm   (double t, const Vec in, Vec out);
+static int   rtn_to_sm    (double t, const Vec in, Vec out);
+static int   rtn_to_gseq  (double t, const Vec in, Vec out);
+static int   rtn_to_hee   (double t, const Vec in, Vec out);
+static int   rtn_to_hae   (double t, const Vec in, Vec out);
+static int   rtn_to_heeq  (double t, const Vec in, Vec out);
+static int  gseq_to_j2000 (double t, const Vec in, Vec out);
+static int  gseq_to_gei   (double t, const Vec in, Vec out);
+static int  gseq_to_geo   (double t, const Vec in, Vec out);
+static int  gseq_to_mag   (double t, const Vec in, Vec out);
+static int  gseq_to_gse   (double t, const Vec in, Vec out);
+static int  gseq_to_gsm   (double t, const Vec in, Vec out);
+static int  gseq_to_sm    (double t, const Vec in, Vec out);
+static int  gseq_to_rtn   (double t, const Vec in, Vec out);
+static int  gseq_to_hee   (double t, const Vec in, Vec out);
+static int  gseq_to_hae   (double t, const Vec in, Vec out);
+static int  gseq_to_heeq  (double t, const Vec in, Vec out);
+static int   hee_to_j2000 (double t, const Vec in, Vec out);
+static int   hee_to_gei   (double t, const Vec in, Vec out);
+static int   hee_to_geo   (double t, const Vec in, Vec out);
+static int   hee_to_mag   (double t, const Vec in, Vec out);
+static int   hee_to_gse   (double t, const Vec in, Vec out);
+static int   hee_to_gsm   (double t, const Vec in, Vec out);
+static int   hee_to_sm    (double t, const Vec in, Vec out);
+static int   hee_to_rtn   (double t, const Vec in, Vec out);
+static int   hee_to_gseq  (double t, const Vec in, Vec out);
+static int   hee_to_hae   (double t, const Vec in, Vec out);
+static int   hee_to_heeq  (double t, const Vec in, Vec out);
+static int   hae_to_j2000 (double t, const Vec in, Vec out);
+static int   hae_to_gei   (double t, const Vec in, Vec out);
+static int   hae_to_geo   (double t, const Vec in, Vec out);
+static int   hae_to_mag   (double t, const Vec in, Vec out);
+static int   hae_to_gse   (double t, const Vec in, Vec out);
+static int   hae_to_gsm   (double t, const Vec in, Vec out);
+static int   hae_to_sm    (double t, const Vec in, Vec out);
+static int   hae_to_rtn   (double t, const Vec in, Vec out);
+static int   hae_to_gseq  (double t, const Vec in, Vec out);
+static int   hae_to_hee   (double t, const Vec in, Vec out);
+static int   hae_to_heeq  (double t, const Vec in, Vec out);
+static int  heeq_to_j2000 (double t, const Vec in, Vec out);
+static int  heeq_to_gei   (double t, const Vec in, Vec out);
+static int  heeq_to_geo   (double t, const Vec in, Vec out);
+static int  heeq_to_mag   (double t, const Vec in, Vec out);
+static int  heeq_to_gse   (double t, const Vec in, Vec out);
+static int  heeq_to_gsm   (double t, const Vec in, Vec out);
+static int  heeq_to_sm    (double t, const Vec in, Vec out);
+static int  heeq_to_rtn   (double t, const Vec in, Vec out);
+static int  heeq_to_gseq  (double t, const Vec in, Vec out);
+static int  heeq_to_hee   (double t, const Vec in, Vec out);
+static int  heeq_to_hae   (double t, const Vec in, Vec out);
 
 static char cxform_err_buf[1024];
 char *cxform_err(void)
@@ -396,7 +395,7 @@ char *cxform_err(void)
 ** The <from>_to_<to> functions are declared further down below (except
 ** for the "real" transformation functions, which are in cxform-manual.c).
 */
-int cxform(const char *from, const char *to, double t, Vec v_in, Vec v_out)
+int cxform(const char *from, const char *to, double t, const Vec v_in, Vec v_out)
 {
   enum systems from_n, to_n;
 
@@ -422,6 +421,10 @@ int cxform(const char *from, const char *to, double t, Vec v_in, Vec v_out)
     return 1;
   }
 
+  return cxform2(from_n, to_n, t, v_in, v_out);
+}
+
+int cxform2(const enum systems from_n, const enum systems to_n, const double t, const double *v_in, double *v_out) {
   /*
   ** Check to see if the source and destination are the same.  If so,
   ** return the input vector as output.
@@ -433,7 +436,6 @@ int cxform(const char *from, const char *to, double t, Vec v_in, Vec v_out)
 
     return 0;
   }
-
   /* For the "default" cases in the switches below */
   strcpy(cxform_err_buf, "Internal error -- this is impossible");
 
@@ -782,7 +784,7 @@ int cxform(const char *from, const char *to, double t, Vec v_in, Vec v_out)
 /*
 ** J2000 to GEI
 */
-int j2000_to_gei(double t, Vec v_in, Vec v_out)
+int j2000_to_gei(double t, const Vec v_in, Vec v_out)
 {
   return j2000_twixt_gei  (t, v_in , v_out, FORWARD);   /* J2000 to GEI   */
 }
@@ -790,7 +792,7 @@ int j2000_to_gei(double t, Vec v_in, Vec v_out)
 /*
 ** J2000 to GEO
 */
-int j2000_to_geo(double t, Vec v_in, Vec v_out)
+int j2000_to_geo(double t, const Vec v_in, Vec v_out)
 {
   return j2000_twixt_gei  (t, v_in , v_out, FORWARD)    /* J2000 to GEI   */
       ||   gei_twixt_geo  (t, v_out, v_out, FORWARD);   /*   GEI to GEO   */
@@ -799,7 +801,7 @@ int j2000_to_geo(double t, Vec v_in, Vec v_out)
 /*
 ** J2000 to MAG
 */
-int j2000_to_mag(double t, Vec v_in, Vec v_out)
+int j2000_to_mag(double t, const Vec v_in, Vec v_out)
 {
   return j2000_twixt_gei  (t, v_in , v_out, FORWARD)    /* J2000 to GEI   */
       ||   gei_twixt_geo  (t, v_out, v_out, FORWARD)    /*   GEI to GEO   */
@@ -809,7 +811,7 @@ int j2000_to_mag(double t, Vec v_in, Vec v_out)
 /*
 ** J2000 to GSE
 */
-int j2000_to_gse(double t, Vec v_in, Vec v_out)
+int j2000_to_gse(double t, const Vec v_in, Vec v_out)
 {
   return j2000_twixt_gei  (t, v_in , v_out, FORWARD)    /* J2000 to GEI   */
       ||   gei_twixt_gse  (t, v_out, v_out, FORWARD);   /*   GEI to GSE   */
@@ -818,7 +820,7 @@ int j2000_to_gse(double t, Vec v_in, Vec v_out)
 /*
 ** J2000 to GSM
 */
-int j2000_to_gsm(double t, Vec v_in, Vec v_out)
+int j2000_to_gsm(double t, const Vec v_in, Vec v_out)
 {
   return j2000_twixt_gei  (t, v_in , v_out, FORWARD)    /* J2000 to GEI   */
       ||   gei_twixt_gse  (t, v_out, v_out, FORWARD)    /*   GEI to GSE   */
@@ -828,7 +830,7 @@ int j2000_to_gsm(double t, Vec v_in, Vec v_out)
 /*
 ** J2000 to SM
 */
-int j2000_to_sm(double t, Vec v_in, Vec v_out)
+int j2000_to_sm(double t, const Vec v_in, Vec v_out)
 {
   return j2000_twixt_gei  (t, v_in , v_out, FORWARD)    /* J2000 to GEI   */
       ||   gei_twixt_gse  (t, v_out, v_out, FORWARD)    /*   GEI to GSE   */
@@ -839,7 +841,7 @@ int j2000_to_sm(double t, Vec v_in, Vec v_out)
 /*
 ** J2000 to RTN
 */
-int j2000_to_rtn(double t, Vec v_in, Vec v_out)
+int j2000_to_rtn(double t, const Vec v_in, Vec v_out)
 {
   return j2000_twixt_gei  (t, v_in , v_out, FORWARD)    /* J2000 to GEI   */
       ||   gei_twixt_gse  (t, v_out, v_out, FORWARD)    /*   GEI to GSE   */
@@ -849,7 +851,7 @@ int j2000_to_rtn(double t, Vec v_in, Vec v_out)
 /*
 ** J2000 to GSEQ
 */
-int j2000_to_gseq(double t, Vec v_in, Vec v_out)
+int j2000_to_gseq(double t, const Vec v_in, Vec v_out)
 {
   return j2000_twixt_gei  (t, v_in , v_out, FORWARD)    /* J2000 to GEI   */
       ||   gei_twixt_gse  (t, v_out, v_out, FORWARD)    /*   GEI to GSE   */
@@ -859,7 +861,7 @@ int j2000_to_gseq(double t, Vec v_in, Vec v_out)
 /*
 ** J2000 to HEE
 */
-int j2000_to_hee(double t, Vec v_in, Vec v_out)
+int j2000_to_hee(double t, const Vec v_in, Vec v_out)
 {
   return j2000_twixt_gei  (t, v_in , v_out, FORWARD)    /* J2000 to GEI   */
       ||   gei_twixt_gse  (t, v_out, v_out, FORWARD)    /*   GEI to GSE   */
@@ -869,7 +871,7 @@ int j2000_to_hee(double t, Vec v_in, Vec v_out)
 /*
 ** J2000 to HAE
 */
-int j2000_to_hae(double t, Vec v_in, Vec v_out)
+int j2000_to_hae(double t, const Vec v_in, Vec v_out)
 {
   return j2000_twixt_gei  (t, v_in , v_out, FORWARD)    /* J2000 to GEI   */
       ||   gei_twixt_gse  (t, v_out, v_out, FORWARD)    /*   GEI to GSE   */
@@ -880,7 +882,7 @@ int j2000_to_hae(double t, Vec v_in, Vec v_out)
 /*
 ** J2000 to HEEQ
 */
-int j2000_to_heeq(double t, Vec v_in, Vec v_out)
+int j2000_to_heeq(double t, const Vec v_in, Vec v_out)
 {
   return j2000_twixt_gei  (t, v_in , v_out, FORWARD)    /* J2000 to GEI   */
       ||   gei_twixt_gse  (t, v_out, v_out, FORWARD)    /*   GEI to GSE   */
@@ -892,7 +894,7 @@ int j2000_to_heeq(double t, Vec v_in, Vec v_out)
 /*
 ** GEI to J2000
 */
-int gei_to_j2000(double t, Vec v_in, Vec v_out)
+int gei_to_j2000(double t, const Vec v_in, Vec v_out)
 {
   return j2000_twixt_gei  (t, v_in , v_out, BACK);      /*   GEI to J2000 */
 }
@@ -900,7 +902,7 @@ int gei_to_j2000(double t, Vec v_in, Vec v_out)
 /*
 ** GEI to GEO
 */
-int gei_to_geo(double t, Vec v_in, Vec v_out)
+int gei_to_geo(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_geo  (t, v_in , v_out, FORWARD);   /*   GEI to GEO   */
 }
@@ -908,7 +910,7 @@ int gei_to_geo(double t, Vec v_in, Vec v_out)
 /*
 ** GEI to MAG
 */
-int gei_to_mag(double t, Vec v_in, Vec v_out)
+int gei_to_mag(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_geo  (t, v_in , v_out, FORWARD)    /*   GEI to GEO   */
       ||   geo_twixt_mag  (t, v_out, v_out, FORWARD);   /*   GEO to MAG   */
@@ -917,7 +919,7 @@ int gei_to_mag(double t, Vec v_in, Vec v_out)
 /*
 ** GEI to GSE
 */
-int gei_to_gse(double t, Vec v_in, Vec v_out)
+int gei_to_gse(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_gse  (t, v_in , v_out, FORWARD);   /*   GEI to GSE   */
 }
@@ -925,7 +927,7 @@ int gei_to_gse(double t, Vec v_in, Vec v_out)
 /*
 ** GEI to GSM
 */
-int gei_to_gsm(double t, Vec v_in, Vec v_out)
+int gei_to_gsm(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_gse  (t, v_in , v_out, FORWARD)    /*   GEI to GSE   */
       ||   gse_twixt_gsm  (t, v_out, v_out, FORWARD);   /*   GSE to GSM   */
@@ -934,7 +936,7 @@ int gei_to_gsm(double t, Vec v_in, Vec v_out)
 /*
 ** GEI to SM
 */
-int gei_to_sm(double t, Vec v_in, Vec v_out)
+int gei_to_sm(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_gse  (t, v_in , v_out, FORWARD)    /*   GEI to GSE   */
       ||   gse_twixt_gsm  (t, v_out, v_out, FORWARD)    /*   GSE to GSM   */
@@ -944,7 +946,7 @@ int gei_to_sm(double t, Vec v_in, Vec v_out)
 /*
 ** GEI to RTN
 */
-int gei_to_rtn(double t, Vec v_in, Vec v_out)
+int gei_to_rtn(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_gse  (t, v_in , v_out, FORWARD)    /*   GEI to GSE   */
       ||   gse_twixt_rtn  (t, v_out, v_out, FORWARD);   /*   GSE to RTN   */
@@ -953,7 +955,7 @@ int gei_to_rtn(double t, Vec v_in, Vec v_out)
 /*
 ** GEI to GSEQ
 */
-int gei_to_gseq(double t, Vec v_in, Vec v_out)
+int gei_to_gseq(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_gse  (t, v_in , v_out, FORWARD)    /*   GEI to GSE   */
       ||   gse_twixt_gseq (t, v_out, v_out, FORWARD);   /*   GSE to GSEQ  */
@@ -962,7 +964,7 @@ int gei_to_gseq(double t, Vec v_in, Vec v_out)
 /*
 ** GEI to HEE
 */
-int gei_to_hee(double t, Vec v_in, Vec v_out)
+int gei_to_hee(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_gse  (t, v_in , v_out, FORWARD)    /*   GEI to GSE   */
       ||   gse_twixt_hee  (t, v_out, v_out, FORWARD);   /*   GSE to HEE   */
@@ -971,7 +973,7 @@ int gei_to_hee(double t, Vec v_in, Vec v_out)
 /*
 ** GEI to HAE
 */
-int gei_to_hae(double t, Vec v_in, Vec v_out)
+int gei_to_hae(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_gse  (t, v_in , v_out, FORWARD)    /*   GEI to GSE   */
       ||   gse_twixt_hee  (t, v_out, v_out, FORWARD)    /*   GSE to HEE   */
@@ -981,7 +983,7 @@ int gei_to_hae(double t, Vec v_in, Vec v_out)
 /*
 ** GEI to HEEQ
 */
-int gei_to_heeq(double t, Vec v_in, Vec v_out)
+int gei_to_heeq(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_gse  (t, v_in , v_out, FORWARD)    /*   GEI to GSE   */
       ||   gse_twixt_hee  (t, v_out, v_out, FORWARD)    /*   GSE to HEE   */
@@ -992,7 +994,7 @@ int gei_to_heeq(double t, Vec v_in, Vec v_out)
 /*
 ** GEO to J2000
 */
-int geo_to_j2000(double t, Vec v_in, Vec v_out)
+int geo_to_j2000(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_geo  (t, v_in , v_out, BACK)       /*   GEO to GEI   */
       || j2000_twixt_gei  (t, v_out, v_out, BACK);      /*   GEI to J2000 */
@@ -1001,7 +1003,7 @@ int geo_to_j2000(double t, Vec v_in, Vec v_out)
 /*
 ** GEO to GEI
 */
-int geo_to_gei(double t, Vec v_in, Vec v_out)
+int geo_to_gei(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_geo  (t, v_in , v_out, BACK);      /*   GEO to GEI   */
 }
@@ -1009,7 +1011,7 @@ int geo_to_gei(double t, Vec v_in, Vec v_out)
 /*
 ** GEO to MAG
 */
-int geo_to_mag(double t, Vec v_in, Vec v_out)
+int geo_to_mag(double t, const Vec v_in, Vec v_out)
 {
   return   geo_twixt_mag  (t, v_in , v_out, FORWARD);   /*   GEO to MAG   */
 }
@@ -1017,7 +1019,7 @@ int geo_to_mag(double t, Vec v_in, Vec v_out)
 /*
 ** GEO to GSE
 */
-int geo_to_gse(double t, Vec v_in, Vec v_out)
+int geo_to_gse(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_geo  (t, v_in , v_out, BACK)       /*   GEO to GEI   */
       ||   gei_twixt_gse  (t, v_out, v_out, FORWARD);   /*   GEI to GSE   */
@@ -1026,7 +1028,7 @@ int geo_to_gse(double t, Vec v_in, Vec v_out)
 /*
 ** GEO to GSM
 */
-int geo_to_gsm(double t, Vec v_in, Vec v_out)
+int geo_to_gsm(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_geo  (t, v_in , v_out, BACK)       /*   GEO to GEI   */
       ||   gei_twixt_gse  (t, v_out, v_out, FORWARD)    /*   GEI to GSE   */
@@ -1036,7 +1038,7 @@ int geo_to_gsm(double t, Vec v_in, Vec v_out)
 /*
 ** GEO to SM
 */
-int geo_to_sm(double t, Vec v_in, Vec v_out)
+int geo_to_sm(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_geo  (t, v_in , v_out, BACK)       /*   GEO to GEI   */
       ||   gei_twixt_gse  (t, v_out, v_out, FORWARD)    /*   GEI to GSE   */
@@ -1047,7 +1049,7 @@ int geo_to_sm(double t, Vec v_in, Vec v_out)
 /*
 ** GEO to RTN
 */
-int geo_to_rtn(double t, Vec v_in, Vec v_out)
+int geo_to_rtn(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_geo  (t, v_in , v_out, BACK)       /*   GEO to GEI   */
       ||   gei_twixt_gse  (t, v_out, v_out, FORWARD)    /*   GEI to GSE   */
@@ -1057,7 +1059,7 @@ int geo_to_rtn(double t, Vec v_in, Vec v_out)
 /*
 ** GEO to GSEQ
 */
-int geo_to_gseq(double t, Vec v_in, Vec v_out)
+int geo_to_gseq(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_geo  (t, v_in , v_out, BACK)       /*   GEO to GEI   */
       ||   gei_twixt_gse  (t, v_out, v_out, FORWARD)    /*   GEI to GSE   */
@@ -1067,7 +1069,7 @@ int geo_to_gseq(double t, Vec v_in, Vec v_out)
 /*
 ** GEO to HEE
 */
-int geo_to_hee(double t, Vec v_in, Vec v_out)
+int geo_to_hee(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_geo  (t, v_in , v_out, BACK)       /*   GEO to GEI   */
       ||   gei_twixt_gse  (t, v_out, v_out, FORWARD)    /*   GEI to GSE   */
@@ -1077,7 +1079,7 @@ int geo_to_hee(double t, Vec v_in, Vec v_out)
 /*
 ** GEO to HAE
 */
-int geo_to_hae(double t, Vec v_in, Vec v_out)
+int geo_to_hae(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_geo  (t, v_in , v_out, BACK)       /*   GEO to GEI   */
       ||   gei_twixt_gse  (t, v_out, v_out, FORWARD)    /*   GEI to GSE   */
@@ -1088,7 +1090,7 @@ int geo_to_hae(double t, Vec v_in, Vec v_out)
 /*
 ** GEO to HEEQ
 */
-int geo_to_heeq(double t, Vec v_in, Vec v_out)
+int geo_to_heeq(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_geo  (t, v_in , v_out, BACK)       /*   GEO to GEI   */
       ||   gei_twixt_gse  (t, v_out, v_out, FORWARD)    /*   GEI to GSE   */
@@ -1100,7 +1102,7 @@ int geo_to_heeq(double t, Vec v_in, Vec v_out)
 /*
 ** MAG to J2000
 */
-int mag_to_j2000(double t, Vec v_in, Vec v_out)
+int mag_to_j2000(double t, const Vec v_in, Vec v_out)
 {
   return   geo_twixt_mag  (t, v_in , v_out, BACK)       /*   MAG to GEO   */
       ||   gei_twixt_geo  (t, v_out, v_out, BACK)       /*   GEO to GEI   */
@@ -1110,7 +1112,7 @@ int mag_to_j2000(double t, Vec v_in, Vec v_out)
 /*
 ** MAG to GEI
 */
-int mag_to_gei(double t, Vec v_in, Vec v_out)
+int mag_to_gei(double t, const Vec v_in, Vec v_out)
 {
   return   geo_twixt_mag  (t, v_in , v_out, BACK)       /*   MAG to GEO   */
       ||   gei_twixt_geo  (t, v_out, v_out, BACK);      /*   GEO to GEI   */
@@ -1119,7 +1121,7 @@ int mag_to_gei(double t, Vec v_in, Vec v_out)
 /*
 ** MAG to GEO
 */
-int mag_to_geo(double t, Vec v_in, Vec v_out)
+int mag_to_geo(double t, const Vec v_in, Vec v_out)
 {
   return   geo_twixt_mag  (t, v_in , v_out, BACK);      /*   MAG to GEO   */
 }
@@ -1127,7 +1129,7 @@ int mag_to_geo(double t, Vec v_in, Vec v_out)
 /*
 ** MAG to GSE
 */
-int mag_to_gse(double t, Vec v_in, Vec v_out)
+int mag_to_gse(double t, const Vec v_in, Vec v_out)
 {
   return   geo_twixt_mag  (t, v_in , v_out, BACK)       /*   MAG to GEO   */
       ||   gei_twixt_geo  (t, v_out, v_out, BACK)       /*   GEO to GEI   */
@@ -1137,7 +1139,7 @@ int mag_to_gse(double t, Vec v_in, Vec v_out)
 /*
 ** MAG to GSM
 */
-int mag_to_gsm(double t, Vec v_in, Vec v_out)
+int mag_to_gsm(double t, const Vec v_in, Vec v_out)
 {
   return   geo_twixt_mag  (t, v_in , v_out, BACK)       /*   MAG to GEO   */
       ||   gei_twixt_geo  (t, v_out, v_out, BACK)       /*   GEO to GEI   */
@@ -1148,7 +1150,7 @@ int mag_to_gsm(double t, Vec v_in, Vec v_out)
 /*
 ** MAG to SM
 */
-int mag_to_sm(double t, Vec v_in, Vec v_out)
+int mag_to_sm(double t, const Vec v_in, Vec v_out)
 {
   return   geo_twixt_mag  (t, v_in , v_out, BACK)       /*   MAG to GEO   */
       ||   gei_twixt_geo  (t, v_out, v_out, BACK)       /*   GEO to GEI   */
@@ -1160,7 +1162,7 @@ int mag_to_sm(double t, Vec v_in, Vec v_out)
 /*
 ** MAG to RTN
 */
-int mag_to_rtn(double t, Vec v_in, Vec v_out)
+int mag_to_rtn(double t, const Vec v_in, Vec v_out)
 {
   return   geo_twixt_mag  (t, v_in , v_out, BACK)       /*   MAG to GEO   */
       ||   gei_twixt_geo  (t, v_out, v_out, BACK)       /*   GEO to GEI   */
@@ -1171,7 +1173,7 @@ int mag_to_rtn(double t, Vec v_in, Vec v_out)
 /*
 ** MAG to GSEQ
 */
-int mag_to_gseq(double t, Vec v_in, Vec v_out)
+int mag_to_gseq(double t, const Vec v_in, Vec v_out)
 {
   return   geo_twixt_mag  (t, v_in , v_out, BACK)       /*   MAG to GEO   */
       ||   gei_twixt_geo  (t, v_out, v_out, BACK)       /*   GEO to GEI   */
@@ -1182,7 +1184,7 @@ int mag_to_gseq(double t, Vec v_in, Vec v_out)
 /*
 ** MAG to HEE
 */
-int mag_to_hee(double t, Vec v_in, Vec v_out)
+int mag_to_hee(double t, const Vec v_in, Vec v_out)
 {
   return   geo_twixt_mag  (t, v_in , v_out, BACK)       /*   MAG to GEO   */
       ||   gei_twixt_geo  (t, v_out, v_out, BACK)       /*   GEO to GEI   */
@@ -1193,7 +1195,7 @@ int mag_to_hee(double t, Vec v_in, Vec v_out)
 /*
 ** MAG to HAE
 */
-int mag_to_hae(double t, Vec v_in, Vec v_out)
+int mag_to_hae(double t, const Vec v_in, Vec v_out)
 {
   return   geo_twixt_mag  (t, v_in , v_out, BACK)       /*   MAG to GEO   */
       ||   gei_twixt_geo  (t, v_out, v_out, BACK)       /*   GEO to GEI   */
@@ -1205,7 +1207,7 @@ int mag_to_hae(double t, Vec v_in, Vec v_out)
 /*
 ** MAG to HEEQ
 */
-int mag_to_heeq(double t, Vec v_in, Vec v_out)
+int mag_to_heeq(double t, const Vec v_in, Vec v_out)
 {
   return   geo_twixt_mag  (t, v_in , v_out, BACK)       /*   MAG to GEO   */
       ||   gei_twixt_geo  (t, v_out, v_out, BACK)       /*   GEO to GEI   */
@@ -1218,7 +1220,7 @@ int mag_to_heeq(double t, Vec v_in, Vec v_out)
 /*
 ** GSE to J2000
 */
-int gse_to_j2000(double t, Vec v_in, Vec v_out)
+int gse_to_j2000(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_gse  (t, v_in , v_out, BACK)       /*   GSE to GEI   */
       || j2000_twixt_gei  (t, v_out, v_out, BACK);      /*   GEI to J2000 */
@@ -1227,7 +1229,7 @@ int gse_to_j2000(double t, Vec v_in, Vec v_out)
 /*
 ** GSE to GEI
 */
-int gse_to_gei(double t, Vec v_in, Vec v_out)
+int gse_to_gei(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_gse  (t, v_in , v_out, BACK);      /*   GSE to GEI   */
 }
@@ -1235,7 +1237,7 @@ int gse_to_gei(double t, Vec v_in, Vec v_out)
 /*
 ** GSE to GEO
 */
-int gse_to_geo(double t, Vec v_in, Vec v_out)
+int gse_to_geo(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_gse  (t, v_in , v_out, BACK)       /*   GSE to GEI   */
       ||   gei_twixt_geo  (t, v_out, v_out, FORWARD);   /*   GEI to GEO   */
@@ -1244,7 +1246,7 @@ int gse_to_geo(double t, Vec v_in, Vec v_out)
 /*
 ** GSE to MAG
 */
-int gse_to_mag(double t, Vec v_in, Vec v_out)
+int gse_to_mag(double t, const Vec v_in, Vec v_out)
 {
   return   gei_twixt_gse  (t, v_in , v_out, BACK)       /*   GSE to GEI   */
       ||   gei_twixt_geo  (t, v_out, v_out, FORWARD)    /*   GEI to GEO   */
@@ -1254,7 +1256,7 @@ int gse_to_mag(double t, Vec v_in, Vec v_out)
 /*
 ** GSE to GSM
 */
-int gse_to_gsm(double t, Vec v_in, Vec v_out)
+int gse_to_gsm(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gsm  (t, v_in , v_out, FORWARD);   /*   GSE to GSM   */
 }
@@ -1262,7 +1264,7 @@ int gse_to_gsm(double t, Vec v_in, Vec v_out)
 /*
 ** GSE to SM
 */
-int gse_to_sm(double t, Vec v_in, Vec v_out)
+int gse_to_sm(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gsm  (t, v_in , v_out, FORWARD)    /*   GSE to GSM   */
       ||   gsm_twixt_sm   (t, v_out, v_out, FORWARD);   /*   GSM to SM    */
@@ -1271,7 +1273,7 @@ int gse_to_sm(double t, Vec v_in, Vec v_out)
 /*
 ** GSE to RTN
 */
-int gse_to_rtn(double t, Vec v_in, Vec v_out)
+int gse_to_rtn(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_rtn  (t, v_in , v_out, FORWARD);   /*   GSE to RTN   */
 }
@@ -1279,7 +1281,7 @@ int gse_to_rtn(double t, Vec v_in, Vec v_out)
 /*
 ** GSE to GSEQ
 */
-int gse_to_gseq(double t, Vec v_in, Vec v_out)
+int gse_to_gseq(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gseq (t, v_in , v_out, FORWARD);   /*   GSE to GSEQ  */
 }
@@ -1287,7 +1289,7 @@ int gse_to_gseq(double t, Vec v_in, Vec v_out)
 /*
 ** GSE to HEE
 */
-int gse_to_hee(double t, Vec v_in, Vec v_out)
+int gse_to_hee(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_hee  (t, v_in , v_out, FORWARD);   /*   GSE to HEE   */
 }
@@ -1295,7 +1297,7 @@ int gse_to_hee(double t, Vec v_in, Vec v_out)
 /*
 ** GSE to HAE
 */
-int gse_to_hae(double t, Vec v_in, Vec v_out)
+int gse_to_hae(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_hee  (t, v_in , v_out, FORWARD)    /*   GSE to HEE   */
       ||   hae_twixt_hee  (t, v_out, v_out, BACK);      /*   HEE to HAE   */
@@ -1304,7 +1306,7 @@ int gse_to_hae(double t, Vec v_in, Vec v_out)
 /*
 ** GSE to HEEQ
 */
-int gse_to_heeq(double t, Vec v_in, Vec v_out)
+int gse_to_heeq(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_hee  (t, v_in , v_out, FORWARD)    /*   GSE to HEE   */
       ||   hae_twixt_hee  (t, v_out, v_out, BACK)       /*   HEE to HAE   */
@@ -1314,7 +1316,7 @@ int gse_to_heeq(double t, Vec v_in, Vec v_out)
 /*
 ** GSM to J2000
 */
-int gsm_to_j2000(double t, Vec v_in, Vec v_out)
+int gsm_to_j2000(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gsm  (t, v_in , v_out, BACK)       /*   GSM to GSE   */
       ||   gei_twixt_gse  (t, v_out, v_out, BACK)       /*   GSE to GEI   */
@@ -1324,7 +1326,7 @@ int gsm_to_j2000(double t, Vec v_in, Vec v_out)
 /*
 ** GSM to GEI
 */
-int gsm_to_gei(double t, Vec v_in, Vec v_out)
+int gsm_to_gei(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gsm  (t, v_in , v_out, BACK)       /*   GSM to GSE   */
       ||   gei_twixt_gse  (t, v_out, v_out, BACK);      /*   GSE to GEI   */
@@ -1333,7 +1335,7 @@ int gsm_to_gei(double t, Vec v_in, Vec v_out)
 /*
 ** GSM to GEO
 */
-int gsm_to_geo(double t, Vec v_in, Vec v_out)
+int gsm_to_geo(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gsm  (t, v_in , v_out, BACK)       /*   GSM to GSE   */
       ||   gei_twixt_gse  (t, v_out, v_out, BACK)       /*   GSE to GEI   */
@@ -1343,7 +1345,7 @@ int gsm_to_geo(double t, Vec v_in, Vec v_out)
 /*
 ** GSM to MAG
 */
-int gsm_to_mag(double t, Vec v_in, Vec v_out)
+int gsm_to_mag(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gsm  (t, v_in , v_out, BACK)       /*   GSM to GSE   */
       ||   gei_twixt_gse  (t, v_out, v_out, BACK)       /*   GSE to GEI   */
@@ -1354,7 +1356,7 @@ int gsm_to_mag(double t, Vec v_in, Vec v_out)
 /*
 ** GSM to GSE
 */
-int gsm_to_gse(double t, Vec v_in, Vec v_out)
+int gsm_to_gse(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gsm  (t, v_in , v_out, BACK);      /*   GSM to GSE   */
 }
@@ -1362,7 +1364,7 @@ int gsm_to_gse(double t, Vec v_in, Vec v_out)
 /*
 ** GSM to SM
 */
-int gsm_to_sm(double t, Vec v_in, Vec v_out)
+int gsm_to_sm(double t, const Vec v_in, Vec v_out)
 {
   return   gsm_twixt_sm   (t, v_in , v_out, FORWARD);   /*   GSM to SM    */
 }
@@ -1370,7 +1372,7 @@ int gsm_to_sm(double t, Vec v_in, Vec v_out)
 /*
 ** GSM to RTN
 */
-int gsm_to_rtn(double t, Vec v_in, Vec v_out)
+int gsm_to_rtn(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gsm  (t, v_in , v_out, BACK)       /*   GSM to GSE   */
       ||   gse_twixt_rtn  (t, v_out, v_out, FORWARD);   /*   GSE to RTN   */
@@ -1379,7 +1381,7 @@ int gsm_to_rtn(double t, Vec v_in, Vec v_out)
 /*
 ** GSM to GSEQ
 */
-int gsm_to_gseq(double t, Vec v_in, Vec v_out)
+int gsm_to_gseq(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gsm  (t, v_in , v_out, BACK)       /*   GSM to GSE   */
       ||   gse_twixt_gseq (t, v_out, v_out, FORWARD);   /*   GSE to GSEQ  */
@@ -1388,7 +1390,7 @@ int gsm_to_gseq(double t, Vec v_in, Vec v_out)
 /*
 ** GSM to HEE
 */
-int gsm_to_hee(double t, Vec v_in, Vec v_out)
+int gsm_to_hee(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gsm  (t, v_in , v_out, BACK)       /*   GSM to GSE   */
       ||   gse_twixt_hee  (t, v_out, v_out, FORWARD);   /*   GSE to HEE   */
@@ -1397,7 +1399,7 @@ int gsm_to_hee(double t, Vec v_in, Vec v_out)
 /*
 ** GSM to HAE
 */
-int gsm_to_hae(double t, Vec v_in, Vec v_out)
+int gsm_to_hae(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gsm  (t, v_in , v_out, BACK)       /*   GSM to GSE   */
       ||   gse_twixt_hee  (t, v_out, v_out, FORWARD)    /*   GSE to HEE   */
@@ -1407,7 +1409,7 @@ int gsm_to_hae(double t, Vec v_in, Vec v_out)
 /*
 ** GSM to HEEQ
 */
-int gsm_to_heeq(double t, Vec v_in, Vec v_out)
+int gsm_to_heeq(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gsm  (t, v_in , v_out, BACK)       /*   GSM to GSE   */
       ||   gse_twixt_hee  (t, v_out, v_out, FORWARD)    /*   GSE to HEE   */
@@ -1418,7 +1420,7 @@ int gsm_to_heeq(double t, Vec v_in, Vec v_out)
 /*
 ** SM to J2000
 */
-int sm_to_j2000(double t, Vec v_in, Vec v_out)
+int sm_to_j2000(double t, const Vec v_in, Vec v_out)
 {
   return   gsm_twixt_sm   (t, v_in , v_out, BACK)       /*    SM to GSM   */
       ||   gse_twixt_gsm  (t, v_out, v_out, BACK)       /*   GSM to GSE   */
@@ -1429,7 +1431,7 @@ int sm_to_j2000(double t, Vec v_in, Vec v_out)
 /*
 ** SM to GEI
 */
-int sm_to_gei(double t, Vec v_in, Vec v_out)
+int sm_to_gei(double t, const Vec v_in, Vec v_out)
 {
   return   gsm_twixt_sm   (t, v_in , v_out, BACK)       /*    SM to GSM   */
       ||   gse_twixt_gsm  (t, v_out, v_out, BACK)       /*   GSM to GSE   */
@@ -1439,7 +1441,7 @@ int sm_to_gei(double t, Vec v_in, Vec v_out)
 /*
 ** SM to GEO
 */
-int sm_to_geo(double t, Vec v_in, Vec v_out)
+int sm_to_geo(double t, const Vec v_in, Vec v_out)
 {
   return   gsm_twixt_sm   (t, v_in , v_out, BACK)       /*    SM to GSM   */
       ||   gse_twixt_gsm  (t, v_out, v_out, BACK)       /*   GSM to GSE   */
@@ -1450,7 +1452,7 @@ int sm_to_geo(double t, Vec v_in, Vec v_out)
 /*
 ** SM to MAG
 */
-int sm_to_mag(double t, Vec v_in, Vec v_out)
+int sm_to_mag(double t, const Vec v_in, Vec v_out)
 {
   return   gsm_twixt_sm   (t, v_in , v_out, BACK)       /*    SM to GSM   */
       ||   gse_twixt_gsm  (t, v_out, v_out, BACK)       /*   GSM to GSE   */
@@ -1462,7 +1464,7 @@ int sm_to_mag(double t, Vec v_in, Vec v_out)
 /*
 ** SM to GSE
 */
-int sm_to_gse(double t, Vec v_in, Vec v_out)
+int sm_to_gse(double t, const Vec v_in, Vec v_out)
 {
   return   gsm_twixt_sm   (t, v_in , v_out, BACK)       /*    SM to GSM   */
       ||   gse_twixt_gsm  (t, v_out, v_out, BACK);      /*   GSM to GSE   */
@@ -1471,7 +1473,7 @@ int sm_to_gse(double t, Vec v_in, Vec v_out)
 /*
 ** SM to GSM
 */
-int sm_to_gsm(double t, Vec v_in, Vec v_out)
+int sm_to_gsm(double t, const Vec v_in, Vec v_out)
 {
   return   gsm_twixt_sm   (t, v_in , v_out, BACK);      /*    SM to GSM   */
 }
@@ -1479,7 +1481,7 @@ int sm_to_gsm(double t, Vec v_in, Vec v_out)
 /*
 ** SM to RTN
 */
-int sm_to_rtn(double t, Vec v_in, Vec v_out)
+int sm_to_rtn(double t, const Vec v_in, Vec v_out)
 {
   return   gsm_twixt_sm   (t, v_in , v_out, BACK)       /*    SM to GSM   */
       ||   gse_twixt_gsm  (t, v_out, v_out, BACK)       /*   GSM to GSE   */
@@ -1489,7 +1491,7 @@ int sm_to_rtn(double t, Vec v_in, Vec v_out)
 /*
 ** SM to GSEQ
 */
-int sm_to_gseq(double t, Vec v_in, Vec v_out)
+int sm_to_gseq(double t, const Vec v_in, Vec v_out)
 {
   return   gsm_twixt_sm   (t, v_in , v_out, BACK)       /*    SM to GSM   */
       ||   gse_twixt_gsm  (t, v_out, v_out, BACK)       /*   GSM to GSE   */
@@ -1499,7 +1501,7 @@ int sm_to_gseq(double t, Vec v_in, Vec v_out)
 /*
 ** SM to HEE
 */
-int sm_to_hee(double t, Vec v_in, Vec v_out)
+int sm_to_hee(double t, const Vec v_in, Vec v_out)
 {
   return   gsm_twixt_sm   (t, v_in , v_out, BACK)       /*    SM to GSM   */
       ||   gse_twixt_gsm  (t, v_out, v_out, BACK)       /*   GSM to GSE   */
@@ -1509,7 +1511,7 @@ int sm_to_hee(double t, Vec v_in, Vec v_out)
 /*
 ** SM to HAE
 */
-int sm_to_hae(double t, Vec v_in, Vec v_out)
+int sm_to_hae(double t, const Vec v_in, Vec v_out)
 {
   return   gsm_twixt_sm   (t, v_in , v_out, BACK)       /*    SM to GSM   */
       ||   gse_twixt_gsm  (t, v_out, v_out, BACK)       /*   GSM to GSE   */
@@ -1520,7 +1522,7 @@ int sm_to_hae(double t, Vec v_in, Vec v_out)
 /*
 ** SM to HEEQ
 */
-int sm_to_heeq(double t, Vec v_in, Vec v_out)
+int sm_to_heeq(double t, const Vec v_in, Vec v_out)
 {
   return   gsm_twixt_sm   (t, v_in , v_out, BACK)       /*    SM to GSM   */
       ||   gse_twixt_gsm  (t, v_out, v_out, BACK)       /*   GSM to GSE   */
@@ -1532,7 +1534,7 @@ int sm_to_heeq(double t, Vec v_in, Vec v_out)
 /*
 ** RTN to J2000
 */
-int rtn_to_j2000(double t, Vec v_in, Vec v_out)
+int rtn_to_j2000(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_rtn  (t, v_in , v_out, BACK)       /*   RTN to GSE   */
       ||   gei_twixt_gse  (t, v_out, v_out, BACK)       /*   GSE to GEI   */
@@ -1542,7 +1544,7 @@ int rtn_to_j2000(double t, Vec v_in, Vec v_out)
 /*
 ** RTN to GEI
 */
-int rtn_to_gei(double t, Vec v_in, Vec v_out)
+int rtn_to_gei(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_rtn  (t, v_in , v_out, BACK)       /*   RTN to GSE   */
       ||   gei_twixt_gse  (t, v_out, v_out, BACK);      /*   GSE to GEI   */
@@ -1551,7 +1553,7 @@ int rtn_to_gei(double t, Vec v_in, Vec v_out)
 /*
 ** RTN to GEO
 */
-int rtn_to_geo(double t, Vec v_in, Vec v_out)
+int rtn_to_geo(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_rtn  (t, v_in , v_out, BACK)       /*   RTN to GSE   */
       ||   gei_twixt_gse  (t, v_out, v_out, BACK)       /*   GSE to GEI   */
@@ -1561,7 +1563,7 @@ int rtn_to_geo(double t, Vec v_in, Vec v_out)
 /*
 ** RTN to MAG
 */
-int rtn_to_mag(double t, Vec v_in, Vec v_out)
+int rtn_to_mag(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_rtn  (t, v_in , v_out, BACK)       /*   RTN to GSE   */
       ||   gei_twixt_gse  (t, v_out, v_out, BACK)       /*   GSE to GEI   */
@@ -1572,7 +1574,7 @@ int rtn_to_mag(double t, Vec v_in, Vec v_out)
 /*
 ** RTN to GSE
 */
-int rtn_to_gse(double t, Vec v_in, Vec v_out)
+int rtn_to_gse(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_rtn  (t, v_in , v_out, BACK);      /*   RTN to GSE   */
 }
@@ -1580,7 +1582,7 @@ int rtn_to_gse(double t, Vec v_in, Vec v_out)
 /*
 ** RTN to GSM
 */
-int rtn_to_gsm(double t, Vec v_in, Vec v_out)
+int rtn_to_gsm(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_rtn  (t, v_in , v_out, BACK)       /*   RTN to GSE   */
       ||   gse_twixt_gsm  (t, v_out, v_out, FORWARD);   /*   GSE to GSM   */
@@ -1589,7 +1591,7 @@ int rtn_to_gsm(double t, Vec v_in, Vec v_out)
 /*
 ** RTN to SM
 */
-int rtn_to_sm(double t, Vec v_in, Vec v_out)
+int rtn_to_sm(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_rtn  (t, v_in , v_out, BACK)       /*   RTN to GSE   */
       ||   gse_twixt_gsm  (t, v_out, v_out, FORWARD)    /*   GSE to GSM   */
@@ -1599,7 +1601,7 @@ int rtn_to_sm(double t, Vec v_in, Vec v_out)
 /*
 ** RTN to GSEQ
 */
-int rtn_to_gseq(double t, Vec v_in, Vec v_out)
+int rtn_to_gseq(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_rtn  (t, v_in , v_out, BACK)       /*   RTN to GSE   */
       ||   gse_twixt_gseq (t, v_out, v_out, FORWARD);   /*   GSE to GSEQ  */
@@ -1608,7 +1610,7 @@ int rtn_to_gseq(double t, Vec v_in, Vec v_out)
 /*
 ** RTN to HEE
 */
-int rtn_to_hee(double t, Vec v_in, Vec v_out)
+int rtn_to_hee(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_rtn  (t, v_in , v_out, BACK)       /*   RTN to GSE   */
       ||   gse_twixt_hee  (t, v_out, v_out, FORWARD);   /*   GSE to HEE   */
@@ -1617,7 +1619,7 @@ int rtn_to_hee(double t, Vec v_in, Vec v_out)
 /*
 ** RTN to HAE
 */
-int rtn_to_hae(double t, Vec v_in, Vec v_out)
+int rtn_to_hae(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_rtn  (t, v_in , v_out, BACK)       /*   RTN to GSE   */
       ||   gse_twixt_hee  (t, v_out, v_out, FORWARD)    /*   GSE to HEE   */
@@ -1627,7 +1629,7 @@ int rtn_to_hae(double t, Vec v_in, Vec v_out)
 /*
 ** RTN to HEEQ
 */
-int rtn_to_heeq(double t, Vec v_in, Vec v_out)
+int rtn_to_heeq(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_rtn  (t, v_in , v_out, BACK)       /*   RTN to GSE   */
       ||   gse_twixt_hee  (t, v_out, v_out, FORWARD)    /*   GSE to HEE   */
@@ -1638,7 +1640,7 @@ int rtn_to_heeq(double t, Vec v_in, Vec v_out)
 /*
 ** GSEQ to J2000
 */
-int gseq_to_j2000(double t, Vec v_in, Vec v_out)
+int gseq_to_j2000(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gseq (t, v_in , v_out, BACK)       /*  GSEQ to GSE   */
       ||   gei_twixt_gse  (t, v_out, v_out, BACK)       /*   GSE to GEI   */
@@ -1648,7 +1650,7 @@ int gseq_to_j2000(double t, Vec v_in, Vec v_out)
 /*
 ** GSEQ to GEI
 */
-int gseq_to_gei(double t, Vec v_in, Vec v_out)
+int gseq_to_gei(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gseq (t, v_in , v_out, BACK)       /*  GSEQ to GSE   */
       ||   gei_twixt_gse  (t, v_out, v_out, BACK);      /*   GSE to GEI   */
@@ -1657,7 +1659,7 @@ int gseq_to_gei(double t, Vec v_in, Vec v_out)
 /*
 ** GSEQ to GEO
 */
-int gseq_to_geo(double t, Vec v_in, Vec v_out)
+int gseq_to_geo(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gseq (t, v_in , v_out, BACK)       /*  GSEQ to GSE   */
       ||   gei_twixt_gse  (t, v_out, v_out, BACK)       /*   GSE to GEI   */
@@ -1667,7 +1669,7 @@ int gseq_to_geo(double t, Vec v_in, Vec v_out)
 /*
 ** GSEQ to MAG
 */
-int gseq_to_mag(double t, Vec v_in, Vec v_out)
+int gseq_to_mag(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gseq (t, v_in , v_out, BACK)       /*  GSEQ to GSE   */
       ||   gei_twixt_gse  (t, v_out, v_out, BACK)       /*   GSE to GEI   */
@@ -1678,7 +1680,7 @@ int gseq_to_mag(double t, Vec v_in, Vec v_out)
 /*
 ** GSEQ to GSE
 */
-int gseq_to_gse(double t, Vec v_in, Vec v_out)
+int gseq_to_gse(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gseq (t, v_in , v_out, BACK);      /*  GSEQ to GSE   */
 }
@@ -1686,7 +1688,7 @@ int gseq_to_gse(double t, Vec v_in, Vec v_out)
 /*
 ** GSEQ to GSM
 */
-int gseq_to_gsm(double t, Vec v_in, Vec v_out)
+int gseq_to_gsm(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gseq (t, v_in , v_out, BACK)       /*  GSEQ to GSE   */
       ||   gse_twixt_gsm  (t, v_out, v_out, FORWARD);   /*   GSE to GSM   */
@@ -1695,7 +1697,7 @@ int gseq_to_gsm(double t, Vec v_in, Vec v_out)
 /*
 ** GSEQ to SM
 */
-int gseq_to_sm(double t, Vec v_in, Vec v_out)
+int gseq_to_sm(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gseq (t, v_in , v_out, BACK)       /*  GSEQ to GSE   */
       ||   gse_twixt_gsm  (t, v_out, v_out, FORWARD)    /*   GSE to GSM   */
@@ -1705,7 +1707,7 @@ int gseq_to_sm(double t, Vec v_in, Vec v_out)
 /*
 ** GSEQ to RTN
 */
-int gseq_to_rtn(double t, Vec v_in, Vec v_out)
+int gseq_to_rtn(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gseq (t, v_in , v_out, BACK)       /*  GSEQ to GSE   */
       ||   gse_twixt_rtn  (t, v_out, v_out, FORWARD);   /*   GSE to RTN   */
@@ -1714,7 +1716,7 @@ int gseq_to_rtn(double t, Vec v_in, Vec v_out)
 /*
 ** GSEQ to HEE
 */
-int gseq_to_hee(double t, Vec v_in, Vec v_out)
+int gseq_to_hee(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gseq (t, v_in , v_out, BACK)       /*  GSEQ to GSE   */
       ||   gse_twixt_hee  (t, v_out, v_out, FORWARD);   /*   GSE to HEE   */
@@ -1723,7 +1725,7 @@ int gseq_to_hee(double t, Vec v_in, Vec v_out)
 /*
 ** GSEQ to HAE
 */
-int gseq_to_hae(double t, Vec v_in, Vec v_out)
+int gseq_to_hae(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gseq (t, v_in , v_out, BACK)       /*  GSEQ to GSE   */
       ||   gse_twixt_hee  (t, v_out, v_out, FORWARD)    /*   GSE to HEE   */
@@ -1733,7 +1735,7 @@ int gseq_to_hae(double t, Vec v_in, Vec v_out)
 /*
 ** GSEQ to HEEQ
 */
-int gseq_to_heeq(double t, Vec v_in, Vec v_out)
+int gseq_to_heeq(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_gseq (t, v_in , v_out, BACK)       /*  GSEQ to GSE   */
       ||   gse_twixt_hee  (t, v_out, v_out, FORWARD)    /*   GSE to HEE   */
@@ -1744,7 +1746,7 @@ int gseq_to_heeq(double t, Vec v_in, Vec v_out)
 /*
 ** HEE to J2000
 */
-int hee_to_j2000(double t, Vec v_in, Vec v_out)
+int hee_to_j2000(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_hee  (t, v_in , v_out, BACK)       /*   HEE to GSE   */
       ||   gei_twixt_gse  (t, v_out, v_out, BACK)       /*   GSE to GEI   */
@@ -1754,7 +1756,7 @@ int hee_to_j2000(double t, Vec v_in, Vec v_out)
 /*
 ** HEE to GEI
 */
-int hee_to_gei(double t, Vec v_in, Vec v_out)
+int hee_to_gei(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_hee  (t, v_in , v_out, BACK)       /*   HEE to GSE   */
       ||   gei_twixt_gse  (t, v_out, v_out, BACK);      /*   GSE to GEI   */
@@ -1763,7 +1765,7 @@ int hee_to_gei(double t, Vec v_in, Vec v_out)
 /*
 ** HEE to GEO
 */
-int hee_to_geo(double t, Vec v_in, Vec v_out)
+int hee_to_geo(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_hee  (t, v_in , v_out, BACK)       /*   HEE to GSE   */
       ||   gei_twixt_gse  (t, v_out, v_out, BACK)       /*   GSE to GEI   */
@@ -1773,7 +1775,7 @@ int hee_to_geo(double t, Vec v_in, Vec v_out)
 /*
 ** HEE to MAG
 */
-int hee_to_mag(double t, Vec v_in, Vec v_out)
+int hee_to_mag(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_hee  (t, v_in , v_out, BACK)       /*   HEE to GSE   */
       ||   gei_twixt_gse  (t, v_out, v_out, BACK)       /*   GSE to GEI   */
@@ -1784,7 +1786,7 @@ int hee_to_mag(double t, Vec v_in, Vec v_out)
 /*
 ** HEE to GSE
 */
-int hee_to_gse(double t, Vec v_in, Vec v_out)
+int hee_to_gse(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_hee  (t, v_in , v_out, BACK);      /*   HEE to GSE   */
 }
@@ -1792,7 +1794,7 @@ int hee_to_gse(double t, Vec v_in, Vec v_out)
 /*
 ** HEE to GSM
 */
-int hee_to_gsm(double t, Vec v_in, Vec v_out)
+int hee_to_gsm(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_hee  (t, v_in , v_out, BACK)       /*   HEE to GSE   */
       ||   gse_twixt_gsm  (t, v_out, v_out, FORWARD);   /*   GSE to GSM   */
@@ -1801,7 +1803,7 @@ int hee_to_gsm(double t, Vec v_in, Vec v_out)
 /*
 ** HEE to SM
 */
-int hee_to_sm(double t, Vec v_in, Vec v_out)
+int hee_to_sm(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_hee  (t, v_in , v_out, BACK)       /*   HEE to GSE   */
       ||   gse_twixt_gsm  (t, v_out, v_out, FORWARD)    /*   GSE to GSM   */
@@ -1811,7 +1813,7 @@ int hee_to_sm(double t, Vec v_in, Vec v_out)
 /*
 ** HEE to RTN
 */
-int hee_to_rtn(double t, Vec v_in, Vec v_out)
+int hee_to_rtn(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_hee  (t, v_in , v_out, BACK)       /*   HEE to GSE   */
       ||   gse_twixt_rtn  (t, v_out, v_out, FORWARD);   /*   GSE to RTN   */
@@ -1820,7 +1822,7 @@ int hee_to_rtn(double t, Vec v_in, Vec v_out)
 /*
 ** HEE to GSEQ
 */
-int hee_to_gseq(double t, Vec v_in, Vec v_out)
+int hee_to_gseq(double t, const Vec v_in, Vec v_out)
 {
   return   gse_twixt_hee  (t, v_in , v_out, BACK)       /*   HEE to GSE   */
       ||   gse_twixt_gseq (t, v_out, v_out, FORWARD);   /*   GSE to GSEQ  */
@@ -1829,7 +1831,7 @@ int hee_to_gseq(double t, Vec v_in, Vec v_out)
 /*
 ** HEE to HAE
 */
-int hee_to_hae(double t, Vec v_in, Vec v_out)
+int hee_to_hae(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_hee  (t, v_in , v_out, BACK);      /*   HEE to HAE   */
 }
@@ -1837,7 +1839,7 @@ int hee_to_hae(double t, Vec v_in, Vec v_out)
 /*
 ** HEE to HEEQ
 */
-int hee_to_heeq(double t, Vec v_in, Vec v_out)
+int hee_to_heeq(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_hee  (t, v_in , v_out, BACK)       /*   HEE to HAE   */
       ||   hae_twixt_heeq (t, v_out, v_out, FORWARD);   /*   HAE to HEEQ  */
@@ -1846,7 +1848,7 @@ int hee_to_heeq(double t, Vec v_in, Vec v_out)
 /*
 ** HAE to J2000
 */
-int hae_to_j2000(double t, Vec v_in, Vec v_out)
+int hae_to_j2000(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_hee  (t, v_in , v_out, FORWARD)    /*   HAE to HEE   */
       ||   gse_twixt_hee  (t, v_out, v_out, BACK)       /*   HEE to GSE   */
@@ -1857,7 +1859,7 @@ int hae_to_j2000(double t, Vec v_in, Vec v_out)
 /*
 ** HAE to GEI
 */
-int hae_to_gei(double t, Vec v_in, Vec v_out)
+int hae_to_gei(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_hee  (t, v_in , v_out, FORWARD)    /*   HAE to HEE   */
       ||   gse_twixt_hee  (t, v_out, v_out, BACK)       /*   HEE to GSE   */
@@ -1867,7 +1869,7 @@ int hae_to_gei(double t, Vec v_in, Vec v_out)
 /*
 ** HAE to GEO
 */
-int hae_to_geo(double t, Vec v_in, Vec v_out)
+int hae_to_geo(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_hee  (t, v_in , v_out, FORWARD)    /*   HAE to HEE   */
       ||   gse_twixt_hee  (t, v_out, v_out, BACK)       /*   HEE to GSE   */
@@ -1878,7 +1880,7 @@ int hae_to_geo(double t, Vec v_in, Vec v_out)
 /*
 ** HAE to MAG
 */
-int hae_to_mag(double t, Vec v_in, Vec v_out)
+int hae_to_mag(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_hee  (t, v_in , v_out, FORWARD)    /*   HAE to HEE   */
       ||   gse_twixt_hee  (t, v_out, v_out, BACK)       /*   HEE to GSE   */
@@ -1890,7 +1892,7 @@ int hae_to_mag(double t, Vec v_in, Vec v_out)
 /*
 ** HAE to GSE
 */
-int hae_to_gse(double t, Vec v_in, Vec v_out)
+int hae_to_gse(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_hee  (t, v_in , v_out, FORWARD)    /*   HAE to HEE   */
       ||   gse_twixt_hee  (t, v_out, v_out, BACK);      /*   HEE to GSE   */
@@ -1899,7 +1901,7 @@ int hae_to_gse(double t, Vec v_in, Vec v_out)
 /*
 ** HAE to GSM
 */
-int hae_to_gsm(double t, Vec v_in, Vec v_out)
+int hae_to_gsm(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_hee  (t, v_in , v_out, FORWARD)    /*   HAE to HEE   */
       ||   gse_twixt_hee  (t, v_out, v_out, BACK)       /*   HEE to GSE   */
@@ -1909,7 +1911,7 @@ int hae_to_gsm(double t, Vec v_in, Vec v_out)
 /*
 ** HAE to SM
 */
-int hae_to_sm(double t, Vec v_in, Vec v_out)
+int hae_to_sm(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_hee  (t, v_in , v_out, FORWARD)    /*   HAE to HEE   */
       ||   gse_twixt_hee  (t, v_out, v_out, BACK)       /*   HEE to GSE   */
@@ -1920,7 +1922,7 @@ int hae_to_sm(double t, Vec v_in, Vec v_out)
 /*
 ** HAE to RTN
 */
-int hae_to_rtn(double t, Vec v_in, Vec v_out)
+int hae_to_rtn(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_hee  (t, v_in , v_out, FORWARD)    /*   HAE to HEE   */
       ||   gse_twixt_hee  (t, v_out, v_out, BACK)       /*   HEE to GSE   */
@@ -1930,7 +1932,7 @@ int hae_to_rtn(double t, Vec v_in, Vec v_out)
 /*
 ** HAE to GSEQ
 */
-int hae_to_gseq(double t, Vec v_in, Vec v_out)
+int hae_to_gseq(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_hee  (t, v_in , v_out, FORWARD)    /*   HAE to HEE   */
       ||   gse_twixt_hee  (t, v_out, v_out, BACK)       /*   HEE to GSE   */
@@ -1940,7 +1942,7 @@ int hae_to_gseq(double t, Vec v_in, Vec v_out)
 /*
 ** HAE to HEE
 */
-int hae_to_hee(double t, Vec v_in, Vec v_out)
+int hae_to_hee(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_hee  (t, v_in , v_out, FORWARD);   /*   HAE to HEE   */
 }
@@ -1948,7 +1950,7 @@ int hae_to_hee(double t, Vec v_in, Vec v_out)
 /*
 ** HAE to HEEQ
 */
-int hae_to_heeq(double t, Vec v_in, Vec v_out)
+int hae_to_heeq(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_heeq (t, v_in , v_out, FORWARD);   /*   HAE to HEEQ  */
 }
@@ -1956,7 +1958,7 @@ int hae_to_heeq(double t, Vec v_in, Vec v_out)
 /*
 ** HEEQ to J2000
 */
-int heeq_to_j2000(double t, Vec v_in, Vec v_out)
+int heeq_to_j2000(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_heeq (t, v_in , v_out, BACK)       /*  HEEQ to HAE   */
       ||   hae_twixt_hee  (t, v_out, v_out, FORWARD)    /*   HAE to HEE   */
@@ -1968,7 +1970,7 @@ int heeq_to_j2000(double t, Vec v_in, Vec v_out)
 /*
 ** HEEQ to GEI
 */
-int heeq_to_gei(double t, Vec v_in, Vec v_out)
+int heeq_to_gei(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_heeq (t, v_in , v_out, BACK)       /*  HEEQ to HAE   */
       ||   hae_twixt_hee  (t, v_out, v_out, FORWARD)    /*   HAE to HEE   */
@@ -1979,7 +1981,7 @@ int heeq_to_gei(double t, Vec v_in, Vec v_out)
 /*
 ** HEEQ to GEO
 */
-int heeq_to_geo(double t, Vec v_in, Vec v_out)
+int heeq_to_geo(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_heeq (t, v_in , v_out, BACK)       /*  HEEQ to HAE   */
       ||   hae_twixt_hee  (t, v_out, v_out, FORWARD)    /*   HAE to HEE   */
@@ -1991,7 +1993,7 @@ int heeq_to_geo(double t, Vec v_in, Vec v_out)
 /*
 ** HEEQ to MAG
 */
-int heeq_to_mag(double t, Vec v_in, Vec v_out)
+int heeq_to_mag(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_heeq (t, v_in , v_out, BACK)       /*  HEEQ to HAE   */
       ||   hae_twixt_hee  (t, v_out, v_out, FORWARD)    /*   HAE to HEE   */
@@ -2004,7 +2006,7 @@ int heeq_to_mag(double t, Vec v_in, Vec v_out)
 /*
 ** HEEQ to GSE
 */
-int heeq_to_gse(double t, Vec v_in, Vec v_out)
+int heeq_to_gse(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_heeq (t, v_in , v_out, BACK)       /*  HEEQ to HAE   */
       ||   hae_twixt_hee  (t, v_out, v_out, FORWARD)    /*   HAE to HEE   */
@@ -2014,7 +2016,7 @@ int heeq_to_gse(double t, Vec v_in, Vec v_out)
 /*
 ** HEEQ to GSM
 */
-int heeq_to_gsm(double t, Vec v_in, Vec v_out)
+int heeq_to_gsm(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_heeq (t, v_in , v_out, BACK)       /*  HEEQ to HAE   */
       ||   hae_twixt_hee  (t, v_out, v_out, FORWARD)    /*   HAE to HEE   */
@@ -2025,7 +2027,7 @@ int heeq_to_gsm(double t, Vec v_in, Vec v_out)
 /*
 ** HEEQ to SM
 */
-int heeq_to_sm(double t, Vec v_in, Vec v_out)
+int heeq_to_sm(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_heeq (t, v_in , v_out, BACK)       /*  HEEQ to HAE   */
       ||   hae_twixt_hee  (t, v_out, v_out, FORWARD)    /*   HAE to HEE   */
@@ -2037,7 +2039,7 @@ int heeq_to_sm(double t, Vec v_in, Vec v_out)
 /*
 ** HEEQ to RTN
 */
-int heeq_to_rtn(double t, Vec v_in, Vec v_out)
+int heeq_to_rtn(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_heeq (t, v_in , v_out, BACK)       /*  HEEQ to HAE   */
       ||   hae_twixt_hee  (t, v_out, v_out, FORWARD)    /*   HAE to HEE   */
@@ -2048,7 +2050,7 @@ int heeq_to_rtn(double t, Vec v_in, Vec v_out)
 /*
 ** HEEQ to GSEQ
 */
-int heeq_to_gseq(double t, Vec v_in, Vec v_out)
+int heeq_to_gseq(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_heeq (t, v_in , v_out, BACK)       /*  HEEQ to HAE   */
       ||   hae_twixt_hee  (t, v_out, v_out, FORWARD)    /*   HAE to HEE   */
@@ -2059,7 +2061,7 @@ int heeq_to_gseq(double t, Vec v_in, Vec v_out)
 /*
 ** HEEQ to HEE
 */
-int heeq_to_hee(double t, Vec v_in, Vec v_out)
+int heeq_to_hee(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_heeq (t, v_in , v_out, BACK)       /*  HEEQ to HAE   */
       ||   hae_twixt_hee  (t, v_out, v_out, FORWARD);   /*   HAE to HEE   */
@@ -2068,7 +2070,7 @@ int heeq_to_hee(double t, Vec v_in, Vec v_out)
 /*
 ** HEEQ to HAE
 */
-int heeq_to_hae(double t, Vec v_in, Vec v_out)
+int heeq_to_hae(double t, const Vec v_in, Vec v_out)
 {
   return   hae_twixt_heeq (t, v_in , v_out, BACK);      /*  HEEQ to HAE   */
 }

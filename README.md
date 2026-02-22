@@ -1,5 +1,5 @@
-# cxform-cmake
-CXFORM CMAKE: Fork of the nasa cxform software, provided with cmake and some 
+# cxform2
+CXFORM 2: Fork of the nasa cxform software, provided with cmake and some 
 improved and fixed functionality
 
 # original source

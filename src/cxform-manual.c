@@ -67,7 +67,7 @@ static char const Ident[] =
 
 #define	SECONDS_PER_CENTURY	(86400 * 365.25 * 100)
 
-#define NUM_IGRF_YEARS_DEFINED 24
+#define NUM_IGRF_YEARS_DEFINED 25
 
 /* for debugging */
 #define	DUMP_MAT	{ int i,j; for (i=0;i<3;i++) { for (j=0;j<3;j++) printf("%15lf ", mat[i][j]); printf("\n"); }}
@@ -350,7 +350,8 @@ double calcG01(double fracYearIndex, double fracYear)
 	static const double g01[NUM_IGRF_YEARS_DEFINED] =
 		{-31543, -31464, -31354, -31212, -31060, -30926, -30805, -30715,
 		 -30654, -30594, -30554, -30500, -30421, -30334, -30220, -30100,
-		 -29992, -29873, -29775, -29692, -29619.4, -29554.63, -29496.57, -29442.0};
+		 -29992, -29873, -29775, -29692, -29619.4, -29554.63, -29496.57, -29441.46,
+    -29404.80};
 	
 	return (g01[(int)floor(fracYearIndex)]*(1.0-fracYear) + 
 		g01[(int)ceil(fracYearIndex)]*fracYear);
@@ -361,7 +362,8 @@ double calcG11(double fracYearIndex, double fracYear)
 	static const double g11[NUM_IGRF_YEARS_DEFINED] = 
 		{-2298, -2298, -2297, -2306, -2317, -2318, -2316, -2306, -2292, -2285,
 		 -2250, -2215, -2169, -2119, -2068, -2013, -1956, -1905, -1848, -1784,
-		 -1728.2, -1669.5, -1568.42, -1501.0};
+		 -1728.2, -1669.05, -1568.42, -1450.90, 
+    };
 	
 	return (g11[(int)floor(fracYearIndex)]*(1.0-fracYear) + 
 		g11[(int)ceil(fracYearIndex)]*fracYear);
@@ -372,7 +374,7 @@ double calcH11(double fracYearIndex, double fracYear)
 	static const double h11[NUM_IGRF_YEARS_DEFINED] = 
 		{5922, 5909, 5898, 5875, 5845, 5817, 5808, 5812, 5821, 5810, 5815,
 		 5820, 5791, 5776, 5737, 5675, 5604, 5500, 5406, 5306, 5186.1, 5077.99, 
-		 4944.26, 4797.1};
+		 4944.26, 4795.99, 4652.5};
 		 
 	return (h11[(int)floor(fracYearIndex)]*(1.0-fracYear) + 
 		h11[(int)ceil(fracYearIndex)]*fracYear);
@@ -1005,5 +1007,20 @@ long date2es(int yyyy, int mm, int dd, int hh, int mm2, int ss)
 {
 	return cxRound((gregorian_calendar_to_jd(yyyy, mm, dd, hh, mm2, ss) - 2451545)
 			* 86400);
+}
+
+
+double dipole_tilt(const double t)
+{ 
+  double z_sm_in_gsm[3];
+  {
+    const double z_unit_vector[3] = {0, 0, 1};
+    if (cxform2(SM, GSM, t, z_unit_vector, z_sm_in_gsm) != 0) 
+    {
+      return NAN;
+    }
+  }
+
+  return atan2(z_sm_in_gsm[0], z_sm_in_gsm[2]);
 }
 

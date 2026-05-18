@@ -35,6 +35,16 @@ int cxform2(const enum systems from_n, const enum systems to_n,const double t,co
 
 char *cxform_err(void);
 
+/**
+ *@brief returns the geodipole tilt in radians for a given t in es
+ *
+ *@param[in] t, in epherimis seconds past J2000, see \ref date2es
+ *
+ *@returns NAN if coordinate transforms fail
+ *
+ */
+double dipole_tilt(const double t);
+
 /*
 ** Utility functions
 */

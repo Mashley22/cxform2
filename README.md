@@ -11,7 +11,7 @@ https://github.com/bsd-conqueror/cxform
 
 # overview
 Provides coordinate transforms for various astronomical coordinate systems, 
-updated up to IGRF 12. Two options are provided for the interaction, either via
+updated up to IGRF 13. Two options are provided for the interaction, either via
 the c api, or via a cli application (see usage cli app). The api has been 
 extended with a cxform2 function which allows the coordinate systems to be 
 selected via enums instead of strings. 
